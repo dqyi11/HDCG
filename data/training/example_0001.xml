@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <instruction text="go to the door by going on the left side of the chair"/>
+  <world time="0">
+    <object name="o0" type="robot"/>
+    <object name="o1" type="box"/>
+    <object name="o2" type="door"/>
+    <object name="o3" type="chair"/>
+  </world>
+  <S>
+    <grounding><grounding_set>
+    </grounding_set></grounding>
+    <VP>
+      <grounding><grounding_set>
+      </grounding_set></grounding>
+      <VB text="go"/>
+      <PP>
+        <grounding><grounding_set>
+        </grounding_set></grounding>
+        <TO text="to"/>
+        <NP>
+          <grounding><grounding_set>
+          </grounding_set></grounding>
+          <DT text="the"/>
+          <NN text="door"/>
+        </NP>
+      </PP>
+      <PP>
+        <grounding><grounding_set>
+        </grounding_set></grounding>
+        <IN text="by"/>
+        <S>
+          <grounding><grounding_set>
+          </grounding_set></grounding>
+          <VP>
+            <grounding><grounding_set>
+            </grounding_set></grounding>
+            <VBG text="going"/>
+            <PP>
+              <grounding><grounding_set>
+              </grounding_set></grounding>
+              <IN text="on"/>
+              <NP>
+                <grounding><grounding_set>
+                </grounding_set></grounding>
+                <NP>
+                  <grounding><grounding_set>
+                  </grounding_set></grounding>
+                  <DT text="the"/>
+                  <JJ text="left"/>
+                  <NN text="side"/>
+                </NP>
+                <PP>
+                  <grounding><grounding_set>
+                  </grounding_set></grounding>
+                  <IN text="of"/>
+                  <NP>
+                    <grounding><grounding_set>
+                    </grounding_set></grounding>
+                    <DT text="the"/>
+                    <NN text="chair"/>
+                  </NP>
+                </PP>
+              </NP>
+            </PP>
+          </VP>
+        </S>
+      </PP>
+    </VP>
+  </S>
+</root>
