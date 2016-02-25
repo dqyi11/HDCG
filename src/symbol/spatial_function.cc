@@ -156,7 +156,7 @@ void Spatial_Function::from_xml( xmlNodePtr node, Spatial_Function* p_func ) {
     }
     
     xmlNodePtr l1 = NULL;
-    for( l1 = l1->children; l1; l1 = l1->next ) {
+    for( l1 = node->children; l1; l1 = l1->next ) {
       if( l1->type == XML_ELEMENT_NODE ) {
         if( xmlStrcmp( l1->name, ( const xmlChar* )( "object" ) ) == 0 ) {
           h2sl::Object object;

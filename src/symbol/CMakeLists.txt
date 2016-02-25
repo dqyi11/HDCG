@@ -1,5 +1,6 @@
 # GENGETOPT FILES
-set(GGOS 
+set(GGOS
+    grounding_set_demo_hdcg.ggo 
    )
 
 
@@ -17,6 +18,7 @@ set(SRCS
 
 # BINARY SOURCE FILES 
 set(BIN_SRCS
+    grounding_set_demo_hdcg.cc
     )
 
 # LIBRARY DEPENDENCIES
