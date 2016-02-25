@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <instruction text="walk by the top of the box"/>
+  <world time="0">
+    <object name="o0" type="table"/>
+    <object name="o1" type="box"/>
+    <object name="o2" type="chair"/>
+  </world>
+  <VP>
+    <grounding>
+      <grounding_set>
+        <spatial_function type="top_of">
+          <object name="o1" type="box"/>
+        </spatial_function>
+      </grounding_set>
+    </grounding>
+    <VB text="walk"/>
+    <PP>
+      <grounding>
+        <grounding_set>
+          <spatial_function type="top_of">
+            <object name="o1" type="box"/>
+          </spatial_function>
+        </grounding_set>
+      </grounding>
+      <IN text="by"/>
+      <NP>
+        <grounding>
+          <grounding_set>
+            <spatial_function type="top_of">
+              <object name="o1" type="box"/>
+            </spatial_function>
+          </grounding_set>
+        </grounding>
+        <NP>
+          <grounding>
+            <grounding_set>
+              <spatial_function type="top_of">
+              </spatial_function>
+            </grounding_set>
+          </grounding>
+          <DT text="the"/>
+          <NN text="top"/>
+        </NP>
+        <PP>
+          <grounding>
+            <grounding_set>
+              <object name="o1" type="box"/>
+            </grounding_set>
+          </grounding>
+          <IN text="of"/>
+          <NP>
+            <grounding>
+              <grounding_set>
+                <object name="o1" type="box"/>
+              </grounding_set>
+            </grounding>
+            <DT text="the"/>
+            <NN text="box"/>
+          </NP>
+        </PP>
+      </NP>
+    </PP>
+  </VP>
+</root>

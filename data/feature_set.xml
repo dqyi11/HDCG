@@ -117,10 +117,6 @@
         <feature_constraint_parent_is_robot invert="1"/>
         <feature_constraint_child_is_robot invert="0"/>
         <feature_constraint_child_is_robot invert="1"/>
-        <feature_objective_function invert="0" objective_function_type="1"/>
-        <feature_objective_function invert="0" objective_function_type="2"/>
-        <feature_objective_function_matches_child invert="0"/>
-        <feature_objective_function_matches_child invert="1"/>
         <feature_spatial_function invert="0" spatial_function_type="1"/>
         <feature_spatial_function invert="0" spatial_function_type="2"/>
         <feature_spatial_function invert="0" spatial_function_type="3"/>

@@ -71,6 +71,10 @@ std::string Spatial_Function::type_to_std_string( const unsigned int& type ) {
     return "left_of";
   case( SPATIAL_FUNC_TYPE_RIGHT_OF ):
     return "right_of";
+  case( SPATIAL_FUNC_TYPE_TOP_OF ):
+    return "top_of";
+  case( SPATIAL_FUNC_TYPE_BOTTOM_OF ):
+    return "bottom_of";
   case( SPATIAL_FUNC_TYPE_AVOID ):
     return "avoid";
   }
