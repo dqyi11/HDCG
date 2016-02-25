@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <instruction text="stay away from the left of the box"/>
+  <world time="0">
+    <object name="o0" type="table"/>
+    <object name="o1" type="box"/>
+    <object name="o2" type="chair"/>
+  </world>
+  <VP>
+    <grounding>
+      <grounding_set>
+        <spatial_function type="avoid">
+          <spatial_function type="left_of">
+            <object name="o1" type="box"/>
+          </spatial_function>
+        </spatial_function>
+      </grounding_set>
+    </grounding>
+    <VB text="stay"/>
+    <PRT>
+      <grounding>
+        <grounding_set>
+          <spatial_function type="avoid"/>
+        </grounding_set>
+      </grounding>
+      <RP text="away"/>
+    </PRT>
+    <PP>
+      <grounding>
+        <grounding_set>
+          <spatial_function type="left_of">
+            <object name="o1" type="box"/>
+          </spatial_function>
+        </grounding_set>
+      </grounding>
+      <IN text="from"/>
+      <NP>
+        <grounding>
+          <grounding_set>
+            <spatial_function type="left_of">
+              <object name="o1" type="box"/>
+            </spatial_function>
+          </grounding_set>
+        </grounding>
+        <NP>
+          <grounding>
+            <grounding_set>
+              <spatial_function type="left_of"/>
+            </grounding_set>
+          </grounding>
+          <DT text="the"/>
+          <NN text="left"/>
+        </NP>
+        <PP>
+          <grounding>
+            <grounding_set>
+              <object name="o1" type="box"/>
+            </grounding_set>
+          </grounding>
+          <IN text="of"/>
+          <NP>
+            <grounding>
+              <grounding_set>
+                <object name="o1" type="box"/>
+              </grounding_set>
+            </grounding>
+            <DT text="the"/>
+            <NN text="box"/>
+          </NP>
+        </PP>
+      </NP>
+    </PP>
+  </VP>
+</root>
