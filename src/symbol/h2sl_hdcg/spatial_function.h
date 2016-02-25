@@ -31,11 +31,9 @@ namespace h2sl_hdcg {
   class Spatial_Function : public h2sl::Grounding {
   public:
     Spatial_Function( const unsigned int& type = 0, 
-                      const std::vector< h2sl::Object >& objects  = std::vector< h2sl::Object >(),
-                      const Spatial_Function* func = NULL );
+                      const std::vector< h2sl::Object >& objects  = std::vector< h2sl::Object >() );
     Spatial_Function( const spatial_func_type_t& type, 
-                      const std::vector< h2sl::Object >& objects,
-                      const Spatial_Function* func );
+                      const std::vector< h2sl::Object >& objects );
     virtual ~Spatial_Function();
 
     Spatial_Function( const Spatial_Function& other );
@@ -49,19 +47,23 @@ namespace h2sl_hdcg {
    
     virtual void to_xml( const std::string& filename ) const;
     virtual void to_xml( xmlDocPtr doc, xmlNodePtr root ) const;
+    static void to_xml( xmlDocPtr doc, xmlNodePtr root, const Spatial_Function* p_func );
 
     virtual void from_xml( const std::string& filename );
     virtual void from_xml( xmlNodePtr root );
+    static void from_xml( xmlNodePtr root, Spatial_Function* p_func );
 
     inline unsigned int& type( void ) { return _type; }; 
     inline const unsigned int& type( void ) const { return _type; };
     inline std::vector< h2sl::Object >&  objects( void ) { return _objects; };
     inline const std::vector< h2sl::Object >& objects(  void ) const { return _objects; };
+    inline Spatial_Function* child_function( void ) { return _p_child_function; };
+    inline Spatial_Function* child_function( void ) const { return _p_child_function; };
 
   protected:
     unsigned int _type;
     std::vector< h2sl::Object > _objects;
-    Spatial_Function* _child_function;
+    Spatial_Function* _p_child_function;
   };
 }
 

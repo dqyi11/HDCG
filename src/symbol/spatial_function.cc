@@ -15,18 +15,14 @@
 using namespace std;
 using namespace h2sl_hdcg;
 
-Spatial_Function::Spatial_Function( const unsigned int& type , 
-                                    const std::vector< h2sl::Object >& objects,
-                                    const Spatial_Function* func ) : _type( type ), 
-                                                                     _objects( objects ),
-                                                                     _child_function( func ) {
+Spatial_Function::Spatial_Function( const unsigned int& type, 
+                                    const std::vector< h2sl::Object >& objects ) : _type( type ), _objects( objects ) {
+  _p_child_function = NULL;
 }
 
 Spatial_Function::Spatial_Function( const spatial_func_type_t& type, 
-                                    const std::vector< h2sl::Object >& objects,
-                                    const Spatial_Function* func ) : _type( type ), 
-                                                                     _objects( objects ),
-                                                                     _child_function( func ) {
+                                    const std::vector< h2sl::Object >& objects ) : _type( type ), _objects( objects ) {
+  _p_child_function = NULL;
 }
  
 Spatial_Function::~Spatial_Function() {
@@ -35,17 +31,20 @@ Spatial_Function::~Spatial_Function() {
 Spatial_Function::Spatial_Function( const Spatial_Function& other ) : Grounding( other ),
                                                     _type( other._type ),
                                                     _objects( other._objects ) {
-
+  _p_child_function = other._p_child_function;
 }
 
 Spatial_Function& Spatial_Function::operator=( const Spatial_Function& other ) {
   _type = other._type;
   _objects = other._objects;
+  _p_child_function = other._p_child_function;
   return (*this);
 }
 
 bool Spatial_Function::operator==( const Spatial_Function& other ) const {
   if( _type != other._type ) {
+    return false;
+  } else if ( _p_child_function != other._p_child_function ) {
     return false;
   } else if ( _objects.size() != other._objects.size() ) {
     return false;
@@ -101,20 +100,28 @@ void Spatial_Function::to_xml( const std::string& filename ) const {
   xmlDocPtr doc = xmlNewDoc( ( xmlChar* )( "1.0" ) );
   xmlNodePtr root = xmlNewDocNode( doc, NULL, ( xmlChar* )( "root" ), NULL );
   xmlDocSetRootElement( doc, root );
-  to_xml( doc, root);
+  to_xml( doc, root, this );
   xmlSaveFormatFileEnc( filename.c_str(), doc, "UTF-8", 1 );
   xmlFreeDoc( doc );
   return;
 }
 
-void Spatial_Function::to_xml( xmlDocPtr doc, xmlNodePtr root ) const {
-  xmlNodePtr node = xmlNewDocNode( doc, NULL, ( const xmlChar* )( "spatial_function" ), NULL );
-  xmlNewProp( node, ( const xmlChar* )( "type" ), ( const xmlChar* )( type_to_std_string( _type ).c_str() ) );
-  for( unsigned int i = 0; i < _objects.size(); i ++ ) {
-    _objects[ i ].to_xml( doc, node );
+void Spatial_Function::to_xml( xmlDocPtr doc, xmlNodePtr root, const Spatial_Function* p_func ) {
+  if( p_func ) {
+    xmlNodePtr node = xmlNewDocNode( doc, NULL, ( const xmlChar* )( "spatial_function" ), NULL );
+    xmlNewProp( node, ( const xmlChar* )( "type" ), ( const xmlChar* )( type_to_std_string( p_func->_type ).c_str() ) );
+    for( unsigned int i = 0; i < p_func->_objects.size(); i ++ ) {
+      p_func->_objects[ i ].to_xml( doc, node );
+    }
+ 
+    to_xml( doc, node, p_func->_p_child_function );
+    xmlAddChild( root, node );
   }
-  xmlAddChild( root, node );
   return;
+}
+
+void Spatial_Function::to_xml( xmlDocPtr doc, xmlNodePtr root ) const {
+  to_xml( doc, root, this );
 }
 
 void Spatial_Function::from_xml( const std::string& filename ) {
@@ -128,7 +135,7 @@ void Spatial_Function::from_xml( const std::string& filename ) {
       for( l1 = root->children; l1; l1 = l1->next ){
         if( l1->type == XML_ELEMENT_NODE ){
           if( xmlStrcmp( l1->name, ( const xmlChar* )( "spatial_function" ) ) == 0 ) {
-            from_xml( l1 );
+            from_xml( l1, this );
           }
         }
       }
@@ -138,13 +145,13 @@ void Spatial_Function::from_xml( const std::string& filename ) {
   return;
 }
 
-void Spatial_Function::from_xml( xmlNodePtr root ) {
-  _type = SPATIAL_FUNC_TYPE_UNKNOWN;
-  if( root->type == XML_ELEMENT_NODE ) {
-    xmlChar* tmp = xmlGetProp( root, ( const xmlChar* )( "type" ) );
+void Spatial_Function::from_xml( xmlNodePtr node, Spatial_Function* p_func ) {
+  p_func->_type = SPATIAL_FUNC_TYPE_UNKNOWN;
+  if( node->type == XML_ELEMENT_NODE ) {
+    xmlChar* tmp = xmlGetProp( node, ( const xmlChar* )( "type" ) );
     if( tmp != NULL ) {
       string type_string = ( char* )( tmp );
-      _type = type_from_std_string( type_string );
+      p_func->_type = type_from_std_string( type_string );
       xmlFree( tmp );
     }
     
@@ -154,12 +161,20 @@ void Spatial_Function::from_xml( xmlNodePtr root ) {
         if( xmlStrcmp( l1->name, ( const xmlChar* )( "object" ) ) == 0 ) {
           h2sl::Object object;
           object.from_xml( l1 );
-          _objects.push_back( object );
+          p_func->_objects.push_back( object );
         }
+      }
+      else if( xmlStrcmp( l1->name, ( const xmlChar* )( "spatial_function" ) ) == 0 ) {
+        p_func->_p_child_function = new Spatial_Function();
+        from_xml( l1, p_func->_p_child_function );
       }
     }
   } 
   return;
+}
+
+void Spatial_Function::from_xml( xmlNodePtr root ) {
+  from_xml( root, this );
 }
 
 namespace h2sl_hdcg {

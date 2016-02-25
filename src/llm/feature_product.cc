@@ -27,6 +27,7 @@
 #include "h2sl_hdcg/feature_spatial_function.h"
 #include "h2sl_hdcg/feature_spatial_function_matches_child.h"
 #include "h2sl_hdcg/feature_spatial_function_object_matches_child.h"
+#include "h2sl_hdcg/feature_spatial_function_child_matches_child.h"
 #include "h2sl_hdcg/feature_product.h"
 
 using namespace std;
@@ -182,6 +183,9 @@ from_xml( xmlNodePtr root ){
               } else if ( xmlStrcmp( l2->name, ( const xmlChar* )( "feature_spatial_function_object_matches_child" ) ) == 0 ){
                 _feature_groups.back().push_back( new Feature_Spatial_Function_Object_Matches_Child() );
                 _feature_groups.back().back()->from_xml( l2 );
+              } else if ( xmlStrcmp( l2->name, ( const xmlChar* )( "feature_spatial_function_child_matches_child" ) ) == 0 ){
+                  _feature_groups.back().push_back( new Feature_Spatial_Function_Child_Matches_Child() );
+                  _feature_groups.back().back()->from_xml( l2 );
               } else {
                 cout << "could not load feature " << l2->name << endl;
                 assert( false );

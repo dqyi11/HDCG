@@ -5,7 +5,7 @@
 #include "h2sl/region.h"
 #include "h2sl/cv.h"
 #include "h2sl_hdcg/feature_set.h"
-#include "feature_set_hdcg_demo_cmdline.h"
+#include "feature_set_demo_hdcg_cmdline.h"
 
 using namespace std;
 using namespace h2sl;

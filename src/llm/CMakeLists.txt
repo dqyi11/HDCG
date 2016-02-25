@@ -1,6 +1,6 @@
 # GENGETOPT FILES
 set(GGOS
-    feature_set_hdcg_demo.ggo
+    feature_set_demo_hdcg.ggo
    )
  
 # HEADER FILES
@@ -8,6 +8,7 @@ set(HDRS
     h2sl_hdcg/feature_spatial_function.h
     h2sl_hdcg/feature_spatial_function_matches_child.h
     h2sl_hdcg/feature_spatial_function_object_matches_child.h
+    h2sl_hdcg/feature_spatial_function_child_matches_child.h
     h2sl_hdcg/feature_product.h
     h2sl_hdcg/feature_set.h
    )
@@ -20,13 +21,14 @@ set(SRCS
     feature_spatial_function.cc
     feature_spatial_function_matches_child.cc
     feature_spatial_function_object_matches_child.cc
+    feature_spatial_function_child_matches_child.cc
     feature_product.cc
     feature_set.cc
    )
 
 # BINARY SOURCE FILES
 set(BIN_SRCS
-    feature_set_hdcg_demo.cc
+    feature_set_demo_hdcg.cc
    )
 
 # LIBRARY DEPENDENCIES

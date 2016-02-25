@@ -125,6 +125,8 @@
         <feature_spatial_function_matches_child invert="1"/>
         <feature_spatial_function_object_matches_child invert="0"/>
         <feature_spatial_function_object_matches_child invert="1"/>
+        <feature_spatial_function_child_matches_child invert="0"/>
+        <feature_spatial_function_child_matches_child invert="1"/>
       </feature_group>
     </feature_product>
   </feature_set>
