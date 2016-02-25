@@ -40,6 +40,7 @@
 #include "h2sl/parser_cyk.h"
 //#include "h2sl/dcg.h"
 #include "h2sl_hdcg/dcg.h"
+#include "h2sl_hdcg/feature_set.h"
 #include "dcg_demo_hdcg_cmdline.h"
 
 using namespace std;
@@ -67,7 +68,7 @@ main( int argc,
     world->from_xml( args.world_arg );
   }
 
-  Feature_Set * feature_set = new Feature_Set();
+  Feature_Set * feature_set = new h2sl_hdcg::Feature_Set();
   LLM * llm = new LLM( feature_set );
   if( args.llm_given ){
     llm->from_xml( args.llm_arg );

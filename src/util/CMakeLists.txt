@@ -1,6 +1,7 @@
 # GENGETOPT FILES
 set(GGOS
     llm_train_hdcg.ggo
+    gui_demo_hdcg.ggo
     )
 
 # HEADER FILES
@@ -18,6 +19,7 @@ set(SRCS
 # BINARY SOURCE FILES
 set(BIN_SRCS
     llm_train_hdcg.cc
+    gui_demo_hdcg.cc
     )
 
 # LIBRARY DEPENDENCIES
