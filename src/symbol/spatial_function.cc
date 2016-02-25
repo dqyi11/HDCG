@@ -15,10 +15,18 @@
 using namespace std;
 using namespace h2sl_hdcg;
 
-Spatial_Function::Spatial_Function( const unsigned int& type , const std::vector< h2sl::Object >& objects ) : _type( type ), _objects( objects ) {
+Spatial_Function::Spatial_Function( const unsigned int& type , 
+                                    const std::vector< h2sl::Object >& objects,
+                                    const Spatial_Function* func ) : _type( type ), 
+                                                                     _objects( objects ),
+                                                                     _child_function( func ) {
 }
 
-Spatial_Function::Spatial_Function( const spatial_func_type_t& type, const std::vector< h2sl::Object >& objects ) : _type( type ), _objects( objects ) {
+Spatial_Function::Spatial_Function( const spatial_func_type_t& type, 
+                                    const std::vector< h2sl::Object >& objects,
+                                    const Spatial_Function* func ) : _type( type ), 
+                                                                     _objects( objects ),
+                                                                     _child_function( func ) {
 }
  
 Spatial_Function::~Spatial_Function() {

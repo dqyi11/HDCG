@@ -30,8 +30,12 @@ namespace h2sl_hdcg {
 
   class Spatial_Function : public h2sl::Grounding {
   public:
-    Spatial_Function( const unsigned int& type = 0, const std::vector< h2sl::Object >& objects  = std::vector< h2sl::Object >() );
-    Spatial_Function( const spatial_func_type_t& type, const std::vector< h2sl::Object >& objects );
+    Spatial_Function( const unsigned int& type = 0, 
+                      const std::vector< h2sl::Object >& objects  = std::vector< h2sl::Object >(),
+                      const Spatial_Function* func = NULL );
+    Spatial_Function( const spatial_func_type_t& type, 
+                      const std::vector< h2sl::Object >& objects,
+                      const Spatial_Function* func );
     virtual ~Spatial_Function();
 
     Spatial_Function( const Spatial_Function& other );
@@ -57,6 +61,7 @@ namespace h2sl_hdcg {
   protected:
     unsigned int _type;
     std::vector< h2sl::Object > _objects;
+    Spatial_Function* _child_function;
   };
 }
 
