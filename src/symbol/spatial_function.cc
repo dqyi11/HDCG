@@ -163,10 +163,10 @@ void Spatial_Function::from_xml( xmlNodePtr node, Spatial_Function* p_func ) {
           object.from_xml( l1 );
           p_func->_objects.push_back( object );
         }
-      }
-      else if( xmlStrcmp( l1->name, ( const xmlChar* )( "spatial_function" ) ) == 0 ) {
-        p_func->_p_child_function = new Spatial_Function();
-        from_xml( l1, p_func->_p_child_function );
+        else if( xmlStrcmp( l1->name, ( const xmlChar* )( "spatial_function" ) ) == 0 ) {
+          p_func->_p_child_function = new Spatial_Function();
+          from_xml( l1, p_func->_p_child_function );
+        }
       }
     }
   } 
