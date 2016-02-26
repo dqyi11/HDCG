@@ -60,6 +60,7 @@ namespace h2sl_hdcg {
     inline Spatial_Function* child_function( void ) { return _p_child_function; };
     inline Spatial_Function* child_function( void ) const { return _p_child_function; };
 
+    void set_child_function( Spatial_Function* p_func ) { _p_child_function = p_func; };
   protected:
     unsigned int _type;
     std::vector< h2sl::Object > _objects;

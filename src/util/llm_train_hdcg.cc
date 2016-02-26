@@ -66,6 +66,8 @@ evaluate_model( LLM* llm,
         cout << "  grounding:" << *static_cast< const Region* >( examples[ i ].second.grounding() ) << endl; 
       } else if ( dynamic_cast< const Constraint* >( examples[ i ].second.grounding() ) != NULL ){
         cout << "  grounding:" << *static_cast< const Constraint* >( examples[ i ].second.grounding() ) << endl; 
+      } else if ( dynamic_cast< const h2sl::Object* >( examples[ i ].second.grounding() ) != NULL ) {
+        cout << " grounding:" << *static_cast< const h2sl::Object* >( examples[ i ].second.grounding() ) << endl;
       } else if ( dynamic_cast< const h2sl_hdcg::Spatial_Function* >( examples[ i ].second.grounding() ) != NULL ){
         cout << "  grounding:" << *static_cast< const h2sl_hdcg::Spatial_Function* >( examples[ i ].second.grounding() ) << endl;
       }
@@ -81,6 +83,8 @@ evaluate_model( LLM* llm,
             cout << "children[" << j << "]:" << *static_cast< Constraint* >( examples[ i ].second.children()[ j ].second[ k ] ) << endl;
           } else if( dynamic_cast< h2sl_hdcg::Spatial_Function* >( examples[ i ].second.children()[ j ].second[ k ] ) != NULL ){
             cout << "children[" << j << "]:" << *static_cast< h2sl_hdcg::Spatial_Function* >( examples[ i ].second.children()[ j ].second[ k ] ) << endl;
+          } else if( dynamic_cast< h2sl::Object* >( examples[ i ].second.children()[ j ].second[ k ] ) != NULL ){
+            cout << "children[" << j << "]:" << *static_cast< h2sl::Object* >( examples[ i ].second.children()[ j ].second[ k ] ) << endl;
           }
         }
       }
@@ -120,6 +124,16 @@ evaluate_cv( const Grounding* grounding,
     for( unsigned int i = 0; i < groundingSet->groundings().size(); i++ ){
       if( dynamic_cast< const Constraint* >( groundingSet->groundings()[ i ] ) ){
         if( *constraint_grounding == *dynamic_cast< const Constraint* >( groundingSet->groundings()[ i ] ) ){
+          cv = CV_TRUE;
+        }
+      }
+    }
+  } else if ( dynamic_cast< const h2sl::Object* >( grounding ) != NULL ) {
+    const h2sl::Object* object_grounding = dynamic_cast< const h2sl::Object* >( grounding );
+    cv = CV_FALSE;
+    for( unsigned int i = 0; i < groundingSet->groundings().size(); i++ ){
+      if( dynamic_cast< const h2sl::Object* >( groundingSet->groundings()[ i ] ) ){
+        if( *object_grounding == *dynamic_cast< const h2sl::Object* >( groundingSet->groundings()[ i ] ) ){
           cv = CV_TRUE;
         }
       }
