@@ -5,6 +5,7 @@ set(GGOS
  
 # HEADER FILES
 set(HDRS
+    h2sl_hdcg/feature_object_matches_child.h
     h2sl_hdcg/feature_spatial_function.h
     h2sl_hdcg/feature_spatial_function_matches_child.h
     h2sl_hdcg/feature_spatial_function_object_matches_child.h
@@ -18,6 +19,7 @@ set(QT_HDRS )
 
 # SOURCE FILES
 set(SRCS
+    feature_object_matches_child.cc
     feature_spatial_function.cc
     feature_spatial_function_matches_child.cc
     feature_spatial_function_object_matches_child.cc
