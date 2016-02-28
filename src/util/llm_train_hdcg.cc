@@ -42,6 +42,7 @@
 #include "h2sl_hdcg/dcg.h"
 #include "llm_train_hdcg_cmdline.h"
 #include "h2sl_hdcg/feature_set.h"
+#include "h2sl_hdcg/phrase.h"
 
 using namespace std;
 using namespace h2sl;
@@ -106,7 +107,7 @@ evaluate_model( LLM* llm,
 
 unsigned int
 evaluate_cv( const Grounding* grounding,
-              const Grounding_Set* groundingSet ){
+              const h2sl_hdcg::Grounding_Set* groundingSet ){
   unsigned int cv = CV_UNKNOWN;
   if( dynamic_cast< const Region* >( grounding ) != NULL ){
     const Region * region_grounding = dynamic_cast< const Region* >( grounding );
@@ -134,6 +135,7 @@ evaluate_cv( const Grounding* grounding,
     for( unsigned int i = 0; i < groundingSet->groundings().size(); i++ ){
       if( dynamic_cast< const h2sl::Object* >( groundingSet->groundings()[ i ] ) ){
         if( *object_grounding == *dynamic_cast< const h2sl::Object* >( groundingSet->groundings()[ i ] ) ){
+          cout << "Object match" << endl;
           cv = CV_TRUE;
         }
       }
@@ -143,7 +145,12 @@ evaluate_cv( const Grounding* grounding,
     cv = CV_FALSE;
     for( unsigned int i = 0; i < groundingSet->groundings().size(); i++ ){
       if( dynamic_cast< const h2sl_hdcg::Spatial_Function* >( groundingSet->groundings()[ i ] ) ){
-        if( *spatial_function_grounding == *dynamic_cast< const h2sl_hdcg::Spatial_Function* >( groundingSet->groundings()[ i ] ) ){
+        const h2sl_hdcg::Spatial_Function* other_spatial_function_grounding = dynamic_cast< const h2sl_hdcg::Spatial_Function* >( groundingSet->groundings()[ i ] );
+        //cout << "before spatial function comparison" << endl;
+        //cout << "first " << spatial_function_grounding->type() << endl;
+        //cout << "other " << other_spatial_function_grounding->type() << endl;
+        if( *spatial_function_grounding == *other_spatial_function_grounding ){
+          cout << "Spatial function match" << endl;
           cv = CV_TRUE;
         }  
       }
@@ -160,13 +167,13 @@ scrape_examples( const string& filename,
                   const vector< pair< unsigned int, Grounding* > >& searchSpaces,
                   const vector< vector< unsigned int > >& correspondenceVariables,
                   vector< pair< unsigned int, LLM_X > >& examples ){
-  const Grounding_Set * grounding_set = dynamic_cast< const Grounding_Set* >( phrase->grounding() );
+  const h2sl_hdcg::Grounding_Set * grounding_set = dynamic_cast< const h2sl_hdcg::Grounding_Set* >( phrase->grounding() );
 
   for( unsigned int i = 0; i < searchSpaces.size(); i++ ){
     examples.push_back( pair< unsigned int, LLM_X >( evaluate_cv( searchSpaces[ i ].second, grounding_set ), LLM_X( searchSpaces[ i ].second, phrase, world, correspondenceVariables[ searchSpaces[ i ].first ], vector< Feature* >(), filename ) ) );
     for( unsigned int j = 0; j < phrase->children().size(); j++ ){
       examples.back().second.children().push_back( pair< const h2sl::Phrase*, vector< h2sl::Grounding*> >( phrase->children()[ j ], vector<h2sl::Grounding*>() ) ); 
-      Grounding_Set * child_grounding_set = dynamic_cast< Grounding_Set* >( phrase->children()[ j ]->grounding() );
+      h2sl_hdcg::Grounding_Set * child_grounding_set = dynamic_cast< h2sl_hdcg::Grounding_Set* >( phrase->children()[ j ]->grounding() );
       if( child_grounding_set ){
         for( unsigned int k = 0; k < child_grounding_set->groundings().size(); k++ ){
           examples.back().second.children().back().second.push_back( child_grounding_set->groundings()[ k ] );
@@ -202,7 +209,7 @@ main( int argc,
     worlds[ i ] = new World();
     worlds[ i ]->from_xml( args.inputs[ i ] ); 
   
-    phrases[ i ] = new Phrase();
+    phrases[ i ] = new h2sl_hdcg::Phrase();
     phrases[ i ]->from_xml( args.inputs[ i ] ); 
 
     dcgs[ i ] = new h2sl_hdcg::DCG();

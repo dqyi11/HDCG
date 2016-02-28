@@ -14,7 +14,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++0x)
 
 # add the include directories to the build
-set(DIRS symbol llm dcg util
+set(DIRS symbol llm dcg language util
           )
 include_directories(${DIRS} ${CMAKE_INSTALL_PREFIX}/include ${CMAKE_BINARY_DIR}/include)
 

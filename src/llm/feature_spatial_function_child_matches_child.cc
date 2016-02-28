@@ -43,8 +43,11 @@ value( const unsigned int& cv,
       for( unsigned int j = 0; j < children[ i ].second.size(); j++ ){
         const h2sl_hdcg::Spatial_Function * child = dynamic_cast< const h2sl_hdcg::Spatial_Function* >( children[ i ].second[ j ] );
         if( child != NULL ){
-          if( *spatial_function->child_function() == *child ){
-            found_match = true;
+          h2sl_hdcg::Spatial_Function * child_function = spatial_function->child_function();
+          if( child_function ) {
+            if( *child_function == *child ){
+              found_match = true;
+            }
           }
         }
       }
@@ -63,7 +66,7 @@ value( const unsigned int& cv,
 void
 Feature_Spatial_Function_Child_Matches_Child::
 to_xml( xmlDocPtr doc, xmlNodePtr root )const{
-  xmlNodePtr node = xmlNewDocNode( doc, NULL, ( xmlChar* )( "feature_spatial_function_object_matches_child" ), NULL );
+  xmlNodePtr node = xmlNewDocNode( doc, NULL, ( xmlChar* )( "feature_spatial_function_child_matches_child" ), NULL );
   stringstream invert_string;
   invert_string << _invert;
   xmlNewProp( node, ( const xmlChar* )( "invert" ), ( const xmlChar* )( invert_string.str().c_str() ) );

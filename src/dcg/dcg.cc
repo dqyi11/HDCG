@@ -35,7 +35,7 @@
 #include <fstream>
 #include <utility>
 
-#include "h2sl/grounding_set.h"
+#include "h2sl_hdcg/grounding_set.h"
 #include "h2sl/region.h"
 #include "h2sl/constraint.h"
 #include "h2sl/object.h"
@@ -144,16 +144,24 @@ fill_search_spaces( const h2sl::World* world ){
     std::vector< h2sl::Object > objects;
     objects.push_back( *( world->objects()[ j ] ) );
     for( unsigned int i = SPATIAL_FUNC_TYPE_LEFT_OF; i <= SPATIAL_FUNC_TYPE_BOTTOM_OF; i++ ){
-      _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 1, new h2sl_hdcg::Spatial_Function( j, objects ) ) );
-      child_avoid_funcs.push_back( new h2sl_hdcg::Spatial_Function( j, objects ) );
+      _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 0, new h2sl_hdcg::Spatial_Function( i, objects ) ) );
+      child_avoid_funcs.push_back( new h2sl_hdcg::Spatial_Function( i, objects ) );
     }
   }
+
+  // UNKNOWN OBJECT FOR SPATIAL RELATION TYPE 
+  for( unsigned int i = SPATIAL_FUNC_TYPE_LEFT_OF; i <= SPATIAL_FUNC_TYPE_BOTTOM_OF; i++ ){
+    std::vector< h2sl::Object > objects;
+    objects.push_back( h2sl::Object() );
+    _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 0, new h2sl_hdcg::Spatial_Function( i, objects ) ) );
+  }
+ 
   for( unsigned int i = 0; i < world->objects().size(); i++ ) {
     for( unsigned int j = 0; j < i; j++ ) {
       std::vector< h2sl::Object > objects;
       objects.push_back( *( world->objects()[ i ] ) );
       objects.push_back( *( world->objects()[ j ] ) );
-      _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 1, new h2sl_hdcg::Spatial_Function( SPATIAL_FUNC_TYPE_IN_BETWEEN, objects ) ) );
+      _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 0, new h2sl_hdcg::Spatial_Function( SPATIAL_FUNC_TYPE_IN_BETWEEN, objects ) ) );
       child_avoid_funcs.push_back( new h2sl_hdcg::Spatial_Function( SPATIAL_FUNC_TYPE_IN_BETWEEN, objects ) );
     }
   }
@@ -161,13 +169,43 @@ fill_search_spaces( const h2sl::World* world ){
   for( unsigned int i = 0; i < child_avoid_funcs.size(); i ++ ) {
     h2sl_hdcg::Spatial_Function* p_avoid_func = new h2sl_hdcg::Spatial_Function( SPATIAL_FUNC_TYPE_AVOID );
     p_avoid_func->set_child_function( child_avoid_funcs[ i ] );
-    _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 1, p_avoid_func ) );
+    _search_spaces.push_back( pair< unsigned int, h2sl::Grounding* >( 0, p_avoid_func ) );
   }
-
 
   return;
 }
-  
+ 
+void
+DCG::
+_fill_phrase( h2sl::Factor_Set* node,
+              h2sl::Factor_Set_Solution& solution,
+              h2sl::Phrase* phrase ){
+  phrase->grounding() = new h2sl_hdcg::Grounding_Set();
+  for( unsigned int i = 0; i < solution.groundings.size(); i++ ){
+    dynamic_cast< h2sl_hdcg::Grounding_Set* >( phrase->grounding() )->groundings().push_back( solution.groundings[ i ] );
+  }
+  for( unsigned int i = 0; i < node->children().size(); i++ ){
+    phrase->children().push_back( node->children()[ i ]->phrase()->dup() );
+    for( unsigned int j = 0; j < phrase->children().back()->children().size(); j++ ){
+      if( phrase->children().back()->children()[ j ] != NULL ){
+        delete phrase->children().back()->children()[ j ];
+        phrase->children().back()->children()[ j ];
+      }
+    }
+    phrase->children().back()->children().clear();
+    if( phrase->children().back()->grounding() != NULL ){
+      delete phrase->children().back()->grounding();
+      phrase->children().back()->grounding() = NULL;
+    }
+
+    _fill_phrase( node->children()[ i ],
+                  node->children()[ i ]->solutions()[ solution.children[ i ] ],
+                  phrase->children().back() );
+
+  }
+  return;
+}
+ 
 namespace h2sl_hdcg {
   ostream&
   operator<<( ostream& out,

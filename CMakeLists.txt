@@ -11,7 +11,7 @@ message("CMAKE_INSTALL_PREFIX:${CMAKE_INSTALL_PREFIX}")
 include(ExternalProject)
 ExternalProject_Add(h2sl
   PREFIX h2sl
-  DOWNLOAD_COMMAND git clone https://github.com/tmhoward/h2sl.git h2sl
+  DOWNLOAD_COMMAND git clone https://github.com/dqyi11/h2sl.git h2sl
   CMAKE_ARGS -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_MODULE_PATH=${CMAKE_INSTALL_PREFIX}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules
 )
 

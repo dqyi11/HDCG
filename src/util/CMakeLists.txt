@@ -23,7 +23,15 @@ set(BIN_SRCS
     )
 
 # LIBRARY DEPENDENCIES
-set(DEPS h2sl-symbol-hdcg h2sl-dcg-hdcg h2sl-llm-hdcg ${H2SL_LIBRARIES} ${QT_LIBRARIES} ${LIBXML2_LIBRARIES} ${Boost_LIBRARIES})
+set(DEPS h2sl-symbol-hdcg 
+         h2sl-dcg-hdcg 
+         h2sl-llm-hdcg 
+         h2sl-language-hdcg
+         ${H2SL_LIBRARIES} 
+         ${QT_LIBRARIES} 
+         ${LIBXML2_LIBRARIES} 
+         ${Boost_LIBRARIES}
+   )
 
 # LIBRARY NAME
 set(LIB

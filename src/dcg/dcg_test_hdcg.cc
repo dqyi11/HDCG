@@ -34,9 +34,11 @@
 #include <iostream>
 #include <sys/time.h>
 #include "h2sl/common.h"
-#include "h2sl/phrase.h"
+#include "h2sl_hdcg/phrase.h"
 #include "h2sl/constraint.h"
-#include "h2sl/grounding_set.h"
+#include "h2sl/object.h"
+#include "h2sl_hdcg/spatial_function.h"
+#include "h2sl_hdcg/grounding_set.h"
 #include "h2sl/parser_cyk.h"
 //#include "h2sl/dcg.h"
 #include "h2sl_hdcg/feature_set.h"
@@ -76,10 +78,19 @@ extract_instruction( const std::string& filename ){
 bool
 compare_phrases( const Phrase* first, 
                   const Phrase* second ){
+
   if( ( first != NULL ) && ( second != NULL ) ){
-    const Grounding_Set * first_grounding_set = dynamic_cast< const Grounding_Set* >( first->grounding() );
-    const Grounding_Set * second_grounding_set = dynamic_cast< const Grounding_Set* >( second->grounding() );
+    cout << "Compare phrases " << endl;
+    const h2sl_hdcg::Grounding_Set * first_grounding_set = dynamic_cast< const h2sl_hdcg::Grounding_Set* >( first->grounding() );
+    const h2sl_hdcg::Grounding_Set * second_grounding_set = dynamic_cast< const h2sl_hdcg::Grounding_Set* >( second->grounding() );
+    if( first_grounding_set != NULL ) {
+      cout << "first grounding set is not null" << endl;
+    }
+    if( second_grounding_set != NULL ) {
+      cout << "second grounding set is not null" << endl;
+    }
     if( ( first_grounding_set != NULL ) && ( second_grounding_set != NULL ) ){
+      cout << "Compare grounding set " << first_grounding_set->groundings().size() << " vs " << second_grounding_set->groundings().size() << endl;
       if( first_grounding_set->groundings().size() == second_grounding_set->groundings().size() ){
         for( unsigned int i = 0; i < first_grounding_set->groundings().size(); i++ ){
           if( dynamic_cast< const Constraint* >( first_grounding_set->groundings()[ i ] ) != NULL ){
@@ -94,6 +105,38 @@ compare_phrases( const Phrase* first,
               }
             }
             if( !found_match ){
+              return false;
+            }
+          }
+          else if( dynamic_cast< const Object* >( first_grounding_set->groundings()[ i ] ) != NULL ) {
+            const Object* first_grounding_object = static_cast< const Object* >( first_grounding_set->groundings()[ i ] );
+            bool found_match = false;
+            for( unsigned int j = 0; j < second_grounding_set->groundings().size(); j++ ) {
+              if( dynamic_cast< const Object* >( second_grounding_set->groundings()[ j ] ) != NULL ) {
+                const Object* second_grounding_object = static_cast< const Object* >( second_grounding_set->groundings()[ j ] );
+                if( *first_grounding_object == *second_grounding_object ) {
+                  found_match = true;
+                }
+              }
+            }
+            if( !found_match ) {
+              return false;
+            }
+          }
+          else if( dynamic_cast< const h2sl_hdcg::Spatial_Function* >( first_grounding_set->groundings()[ i ] ) != NULL ) {
+            cout << "first found" <<endl;
+            const h2sl_hdcg::Spatial_Function* first_grounding_spatial_function = static_cast< const h2sl_hdcg::Spatial_Function* >( first_grounding_set->groundings()[ i ] );
+            bool found_match = false;
+            for( unsigned int j = 0; j < second_grounding_set->groundings().size(); j++ ) {
+              if( dynamic_cast< const h2sl_hdcg::Spatial_Function* >( second_grounding_set->groundings()[ j ] ) != NULL ) {
+                cout << "second found " << endl;
+                const h2sl_hdcg::Spatial_Function* second_grounding_spatial_function = static_cast< const h2sl_hdcg::Spatial_Function* >( second_grounding_set->groundings()[ j ] );
+                if( *first_grounding_spatial_function == *second_grounding_spatial_function ) {
+                  found_match = true;
+                }
+              }
+            }
+            if( !found_match ) {
               return false;
             }
           }
@@ -144,7 +187,7 @@ main( int argc,
     World * world = new World();  
     world->from_xml( args.inputs[ i ] );
 
-    Phrase * truth = new Phrase();
+    Phrase * truth = new h2sl_hdcg::Phrase();
     truth->from_xml( args.inputs[ i ] );
 
     vector< Phrase* > phrases;

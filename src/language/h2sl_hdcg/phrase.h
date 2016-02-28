@@ -1,5 +1,5 @@
 /**
- * @file    dcg.h
+ * @file    phrase.h
  * @author  Thomas M. Howard (tmhoward@csail.mit.edu)
  *          Matthew R. Walter (mwalter@csail.mit.edu)
  * @version 1.0
@@ -28,32 +28,41 @@
  *
  * @section DESCRIPTION
  *
- * The interface for a class used to represent a Distributed Correspondence
- *   Graph
+ * The interface for a class used to represent a phrase
  */
 
-#ifndef H2SL_DCG_H_HDCG
-#define H2SL_DCG_H_HDCG
+#ifndef H2SL_PHRASE_H_HDCG
+#define H2SL_PHRASE_H_HDCG
 
-#include "h2sl/dcg.h"
+#include <h2sl/phrase.h>
 
 namespace h2sl_hdcg {
-  class DCG : public h2sl::DCG {
-  public:
-    DCG();
-    virtual ~DCG();
-    DCG( const DCG& other );
-    DCG& operator=( const DCG& other );
 
-    virtual void fill_search_spaces( const h2sl::World* world );
+  class Phrase : public h2sl::Phrase {
+  public:
+    Phrase( const h2sl::phrase_type_t& type = h2sl::PHRASE_UNKNOWN, const std::string& text = "na", const std::vector< h2sl::Word >& words = std::vector< h2sl::Word >(), const std::vector< Phrase* >& children = std::vector< Phrase* >(), h2sl::Grounding* grounding = NULL );
+    virtual ~Phrase();
+    Phrase( const Phrase& other );
+    Phrase& operator=( const Phrase& other );
+    bool operator==( const Phrase& other )const;
+    bool operator!=( const Phrase& other )const;
+
+    Phrase* dup( void )const;
+    Phrase* dup( const bool& empty )const;
+
+    virtual void to_xml( const std::string& filename )const;
+    virtual void to_xml( xmlDocPtr doc, xmlNodePtr root )const;
+
+    virtual void from_xml( const std::string& filename );
+    virtual void from_xml( xmlNodePtr root );
+
 
   protected:
-    virtual void _fill_phrase( h2sl::Factor_Set* node, h2sl::Factor_Set_Solution& solution, h2sl::Phrase* phrase );
 
   private:
 
   };
-  std::ostream& operator<<( std::ostream& out, const DCG& other );
+  std::ostream& operator<<( std::ostream& out, const Phrase& other );
 }
 
-#endif /* H2SL_DCG_H_HDCG */
+#endif /* H2SL_PHRASE_H_HDCG */

@@ -36,6 +36,7 @@
           <grounding>
             <grounding_set>
               <spatial_function type="top_of">
+                <object name="na" type="na"/>
               </spatial_function>
             </grounding_set>
           </grounding>

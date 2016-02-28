@@ -45,7 +45,9 @@
         <NP>
           <grounding>
             <grounding_set>
-              <spatial_function type="left_of"/>
+              <spatial_function type="left_of">
+                <object name="na" type="na"/>
+              </spatial_function>
             </grounding_set>
           </grounding>
           <DT text="the"/>
